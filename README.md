@@ -12,7 +12,9 @@ Unfortunately, we do not yet support the ActivityPub protocol, but we will try t
 ## Install
  1. Install PHP 7.4, MySQL
  2. After installation, clone the Github repository:
+ ```bash
     git clone https://github.com/biruxteam/birux /your/folder/to/install/
+ ```
  3. Import the database.sql file into your MySQL database.
  4. Configure .env file
  5. DO NOT USE PHP-FPM!
