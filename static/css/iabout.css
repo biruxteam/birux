@@ -1,0 +1,24 @@
+body {background-color: #fff; color: #222; font-family: TT Commons;}
+pre {margin: 0;  font-family: monospace;}
+a:link {color: #009; text-decoration: none; background-color: #fff;}
+a:hover {text-decoration: underline;}
+table {border-collapse: collapse; border: 0; width: 934px; box-shadow: 1px 2px 3px #ccc;}
+.center {text-align: center;}
+.center table {margin: 1em auto; text-align: left;}
+.center th {text-align: center !important;}
+td, th {border: 1px solid #666; font-size: 75%; vertical-align: baseline; padding: 4px 5px;}
+th {position: sticky; top: 0; background: inherit;}
+h1 {font-size: 150%;}
+h2 {font-size: 125%;}
+.p {text-align: left;}
+.e {background-color: rgb(134, 166, 233); width: 300px; font-weight: bold; }
+.h {background-color: rgb(50, 98, 255); font-weight: bold;}
+.v {background-color: rgb(170, 199, 241); max-width: 300px; overflow-x: auto; word-wrap: break-word;}
+.v i {color: #999;}
+img {float: right; border: 0;}
+hr {width: 934px; background-color: #ccc; border: 0; height: 1px;}
+.btn {
+-webkit-box-shadow: 5px 7px 100px 10px rgba(83, 45, 255, 0.42);
+-moz-box-shadow: 5px 7px 100px 10px rgba(83, 45, 255, 0.42);
+box-shadow: 5px 7px 100px 10px rgba(83, 45, 255, 0.42);
+}

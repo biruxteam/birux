@@ -1,0 +1,75 @@
+
+    .content__away {
+    background-color: #eed4c5;
+    height: 350px;
+    border: none;
+    border-radius: 15px;
+}
+body {
+    font-family: SF UI Text !important;
+}
+
+a,
+span,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #bd7e5a;
+}
+
+b {
+    color: #e6564b;
+}
+
+:root {
+    --color-active: rgb(175, 223, 255);
+    --first-color: #d7d8e0;
+    --second-color: rgb(97, 124, 213);
+    --mb-1: 0.5rem;
+    --mb-2: 1rem;
+    --mb-3: 1.5rem;
+    --mb-4: 2rem;
+    --mb-5: 2.5rem;
+    --mb-6: 3rem;
+    --z-back: -10;
+    --z-normal: 1;
+    --z-tooltip: 10;
+    --z-fixed: 100;
+    --big-font-size: 2rem;
+    --h2-font-size: 1.25rem;
+    --normal-font-size: 0.938rem;
+    --header-height: 3rem;
+    --font-semi: 600;
+}
+
+@media screen and (min-width: 768px) {
+     :root {
+        --big-font-size: 3.5rem;
+        --h2-font-size: 2rem;
+        --normal-font-size: 1rem;
+    }
+}
+.btn-friendly {
+    background-color: #d3b81d !important;
+    color: aliceblue !important;
+}
+.btn-friendly:hover {
+    background-color: #b19600 !important;
+    color: aliceblue !important;
+}
+.btn-friendly:focus {
+    background-color: #d3b81d !important;
+    color: aliceblue !important;
+}
+.btnl-1 {
+    border: none !important;
+    border-radius: 15px 15px 0 0 !important;
+}
+.btnl-2 {
+    border: none !important;
+    border-radius: 0 0 15px 15px !important;
+}

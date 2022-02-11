@@ -1,0 +1,28 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.4",
+        "symfony/yaml": "^5.4",
+        "symfony/twig-pack": "^1.0",
+        "symfony/error-handler": "^5.4",
+        "tracy/tracy": "^2.9",
+        "astrotomic/php-twemoji": "^0.2.1",
+        "laravel/ui": "2.4",
+        "php-ffmpeg/php-ffmpeg": "^0.19.0",
+        "geerlingguy/ping": "^1.2",
+        "extraton/php-ton-client": "^1.23"
+    },
+    "scripts": {
+        "download-ton-sdk-library": "Extraton\\TonClient\\Composer\\Scripts::downloadLibrary",
+        "post-update-cmd": [
+          "@download-ton-sdk-library"
+        ],
+        "post-install-cmd": [
+          "@download-ton-sdk-library"
+        ]
+    }
+}

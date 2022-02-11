@@ -1,0 +1,16 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+AddDefaultCharset UTF-8
+RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+
+Options -Indexes
+
+# block files which needs to be hidden, specify .example extension of the file
+<Files ~ "\.(env|json|config.js|md|gitignore|gitattributes|lock)$">
+    Order allow,deny
+    Deny from all
+</Files>
+RedirectMatch 403 ^/app/?$
+RedirectMatch 403 ^/views/?$
+RedirectMatch 403 ^/views/pages/?$
+RedirectMatch 403 ^/views/pages/Errors/?$.php
