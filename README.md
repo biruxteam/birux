@@ -16,7 +16,8 @@ Unfortunately, we do not yet support the ActivityPub protocol, but we will try t
     git clone https://github.com/biruxteam/birux /your/folder/to/install/
  ```
  3. Import the database.sql file into your MySQL database.
- 4. Configure .env file
- 5. DO NOT USE PHP-FPM!
+ 4. Run `composer install` command to update packages
+ 5. Configure .env file
+ 6. DO NOT USE PHP-FPM!
 Otherwise, there will be an eternal redirect to the same address of your instance.
 6. Done! Your Birux instance is ready to go.
