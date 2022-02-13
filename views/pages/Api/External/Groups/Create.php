@@ -19,7 +19,9 @@ $bodygroup = $_POST['bodygroup'];
             }
             return $randomString;
         }
-        $futurelink = '0000'.generateRandomString();
+        $lastid = DB::query('SELECT * FROM groups ORDER BY id DESC LIMIT 1')[0]['id'];
+
+        $futurelink = $lastid+1;
         if (strlen($bodygroup) < 1) {
             $bodygroup = 'Это моё сообщество в Birux!';
         }
