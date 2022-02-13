@@ -31,28 +31,7 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <body>
 
-    <script>
-        $(document).ready(function() {
-        $('#postForm').submit(function(e) {
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: '/exapi/birux.postsCreate',
-                data: $(this).serialize(),
-                success: function(response) {
-                    var jsonData = JSON.parse(response);
 
-                    console.log(response);
-                    if (jsonData.errorcode == "1") {
-                        $("#resultt").html("<div class='alert alert-dangernew container' role='alert'>Может, что-нибудь напишите в свой пост?</div>");
-                    } else {
-                        window.location.replace("/feed");
-                    }
-                }
-            });
-        });
-    });
-    </script>
     <script>
           $(document).ready(function() {
 
@@ -134,7 +113,9 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
 
 
             </div>
+            
         </div>
+
         <div id="resultt"></div>
         <div class="card mb-3">
         <div class="card-body">
@@ -153,7 +134,106 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
 
 
             </div>
-                                            </div>
+        </div>
+
+        <?php
+
+        use Astrotomic\Twemoji\Twemoji;
+        use Astrotomic\Twemoji\Replacer;
+
+
+        $posts = DB::query('SELECT * FROM posts_comments WHERE post_id=:id', array(':id'=>$id));
+        foreach ($posts as $p) {
+            $fname = DB::query('SELECT fname FROM users WHERE id=:id', array(':id' => $p['user_id']))[0]['fname'];
+            $lname = DB::query('SELECT lname FROM users WHERE id=:id', array(':id' => $p['user_id']))[0]['lname'];
+            $username = DB::query('SELECT username FROM users WHERE id=:id', array(':id' => $p['user_id']))[0]['username'];
+            $photo = DB::query('SELECT photo FROM users WHERE id=:id', array(':id' => $p['user_id']))[0]['photo'];
+            $photopost_exists = DB::query('SELECT photopost_exists FROM posts WHERE id=:postid', array(':postid' => $p['id']))[0]['photopost_exists'];
+                $audiopost_exists = DB::query('SELECT audiopost_exists FROM posts WHERE id=:postid', array(':postid' => $p['id']))[0]['audiopost_exists'];
+                $videopost_exists = DB::query('SELECT videopost_exists FROM posts WHERE id=:postid', array(':postid' => $p['id']))[0]['videopost_exists'];
+            echo '<div class="card mb-3">
+            <div class="card-body">
+            
+                <img src="' . $photo . '" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; margin-top: -33px;" class="fill-current mp-5">
+                <h5 style="margin-bottom: -0px;" href="testings" class="col-10 ml-3  d-inline-block font-weight-bold"><a href="/' . $username . '">' . $fname . '&nbsp;' . $lname . '</a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-10 d-inline-block font-weight-bold">' . zmdate($p['posted_at']) . '</p></h5>
+                
+                <p href="testings" class="col-10 d-inline-block font-weight-bold">' .nl2br(preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $p['body'])) . '</p>';
+                if ($photopost_exists === "1") {
+                    echo "<br><a data-fancybox='group-1' class='colorbox' href='".$p['photopost']."'><img style='width: 300px !Important; border-radius: 15px !important;' class='col-10 d-block w-100 text-muted postimg' width='500' src=" . $p['photopost'] . " alt='display: none;'></a><br>";
+                } else if ($audiopost_exists === "1") {
+                    echo "<br><audio width='235' style='border-radius: 15px !important;' controls><source src='".$p['audiopost']."' controls></audio><br>";
+                } else if ($videopost_exists === "1") {
+                    echo '<br><video width="250" style="border-radius: 15px !important;" controls="controls" autoplay controls muted><source src="'.$p['videopost'].'"></video><br>';
+                }
+                echo '
+                <div class="row row-cols-auto">
+                    <div class="col">';
+            if (DB::query('SELECT user_id FROM posts_likes WHERE user_id=:userid AND post_id=:postid', array(':userid' => isLoggedIn(), ':postid' => $p['id']))[0]['user_id']) {
+                echo '<a data-id="' . $p['id'] . '" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-like nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">' . $p['likes'] . '</span></a>';
+            } else {
+                echo '<a data-id="' . $p['id'] . '" style="float: left;" class="nav__link"><i class="bx bx-like nav__icon"></i><span class="nav__namec ml-3">' . $p['likes'] . '</span></a>';
+            }
+            echo '
+                    </div>
+                    <div class="col">
+                        <a href="/post/' . $p['id'] . '" style="float: left;" class="nav__link"><i class="bx bx-comment-detail nav__icon"></i><span class="nav__namec ml-3">' . $p['comments'] . '</span></a>
+                    </div>';
+                if ($p['user_id'] === isLoggedIn() || $photopost_exists === "1" || $audiopost_exists === "1" || $videopost_exists === "1") {
+                echo '
+                    <div class="col">
+                    <div class="dropdown">
+                    <a id="dropdownMenuLink" href="#" data-bs-toggle="dropdown" style="float: left;" class="nav__link"><i class="bx bx-dots-horizontal-rounded nav__icon"></i><span class="nav__namec ml-3"></span></a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <form method="post">';
+                        echo '<li><a href="/act?act=json_post&postid='.$p['id'].'" name="jsondownload" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-download nav__icon"></i><span class="nav__namec ml-3">Скачать JSON поста</span></a></li>';
+                        if ($photopost_exists === "1") {
+                            echo '<li><a href="'.$p['photopost'].'" name="pinpost" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-download nav__icon"></i><span class="nav__namec ml-3">Скачать оригинал</span></a></li>';
+                        } else if ($audiopost_exists === "1") {
+                            echo '<li><a href="'.$p['audiopost'].'" name="pinpost" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-download nav__icon"></i><span class="nav__namec ml-3">Скачать оригинал</span></a></li>';
+                        } else if ($videopost_exists === "1") {
+                            echo '<li><a href="'.$p['videopost'].'" name="pinpost" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-download nav__icon"></i><span class="nav__namec ml-3">Скачать оригинал</span></a></li>';
+                        }
+                        if ($p['user_id'] === isLoggedIn()) {
+                        echo '
+                        <li><a href="/act?act=pin&postid='.$p['id'].'&token='.$_TOKEN.'" name="pinpost" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-pin nav__icon"></i><span class="nav__namec ml-3">Закрепить</span></a></li>
+                        <li><a data-bs-toggle="modal" data-bs-target="#exampleModal'.$p['id'].'" style="float: left; color: #ff1548;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-trash nav__icon"></i><span class="nav__namec ml-3">Удалить</span></a></li>
+                        '; }
+                        echo '
+                        </form>
+                    </ul>
+                </div>
+                        
+                    </div>'; }
+            echo '
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal'.$p['id'].'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Удаление поста</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Вы действительно хотите удалить этот пост? Действие нельзя будет отменить.
+      </div>
+      <div class="modal-footer">
+        <div><button type="button" class="btn-r btn-secondary" data-bs-dismiss="modal">Отмена</button></div>
+        <div><a href="/act?act=delete&postid='.$p['id'].'&token='.$_TOKEN.'" type="button" class="btn-r btn-danger">Удалить</a></div>
+      </div>
+    </div>
+  </div>
+</div>';
+        }
+
+        ?>
+
+        
         
         
     </div>
