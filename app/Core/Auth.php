@@ -24,4 +24,8 @@ if (isset($_COOKIE['SNID'])) {
 
 return false;
 }
+
+if (isLoggedIn()) {
+        DB::query('UPDATE users SET online = :online WHERE id=:userid', array(':userid'=>isLoggedIn(), ':online'=>time()));
+}
 ?>

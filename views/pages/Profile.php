@@ -137,7 +137,7 @@ if ($usernamedb != $username) {
         <div style="border: 1;" class="card mt-2 mb-3">
             <div class="card-body">
                 <h5 class="card-title">О профиле</h5>
-                <p class="card-text"><?php echo $about; ?></p>
+                <p class="card-text"><?php echo htmlspecialchars($about); ?></p>
             </div>
         </div>
         <?php if ($pinnedpost != '0') { ?>
@@ -207,7 +207,7 @@ if ($usernamedb != $username) {
                 <img src="'.$photo.'" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; margin-top: -33px;" class="fill-current mp-5">
                 <h5 style="margin-bottom: -0px;" href="testings" class="col-sm-10 ml-3  d-inline-block font-weight-bold"><a href="/'.$username.'">'.$fname.'&nbsp;'.$lname.'</a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-sm-10 d-inline-block font-weight-bold">'.zmdate($p['posted_at']).'</p></h5>
                 
-                <p href="testings" class="col-10 d-inline-block font-weight-bold">'.$p['body'].'</p>
+                <p href="testings" class="col-10 d-inline-block font-weight-bold">'.htmlspecialchars($p['body']).'</p>
                 <div class="row row-cols-auto">
                     <div class="col">';
                         if (DB::query('SELECT user_id FROM posts_likes WHERE user_id=:userid AND post_id=:postid', array(':userid' => isLoggedIn(), ':postid'=>$p['id']))[0]['user_id']) {
