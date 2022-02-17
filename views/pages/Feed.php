@@ -147,7 +147,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/app/Controllers/Posts/CreateController.php
                 <img src="' . $photo . '" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; margin-top: -33px;" class="fill-current mp-5">
                 <h5 style="margin-bottom: -0px;" href="testings" class="col-10 ml-3  d-inline-block font-weight-bold"><a href="/' . $username . '">' . $fname . '&nbsp;' . $lname . '</a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-10 d-inline-block font-weight-bold">' . zmdate($p['posted_at']) . '</p></h5>
                 
-                <p href="testings" class="col-10 d-inline-block font-weight-bold">' .nl2br(preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", $p['body'])) . '</p>';
+                <p href="testings" class="col-10 d-inline-block font-weight-bold">' .nl2br(preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\r\n", htmlspecialchars($p['body']))) . '</p>';
                 if ($photopost_exists === "1") {
                     echo "<br><a data-fancybox='group-1' class='colorbox' href='".$p['photopost']."'><img style='width: 300px !Important; border-radius: 15px !important;' class='col-10 d-block w-100 text-muted postimg' width='500' src=" . $p['photopost'] . " alt='display: none;'></a><br>";
                 } else if ($audiopost_exists === "1") {
