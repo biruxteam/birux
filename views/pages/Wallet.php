@@ -1,8 +1,3 @@
-<?php
-
-include($_SERVER['DOCUMENT_ROOT'] . '/app/Controllers/Video/CreateController.php');
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,24 +12,30 @@ include($_SERVER['DOCUMENT_ROOT'] . '/app/Controllers/Video/CreateController.php
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
 <body>
     <?php include($_SERVER['DOCUMENT_ROOT'] . '/views/components/Sidebar.php'); ?>
     <div class="container mt-3">
-        <h2>Создание сообщества</h2>      
-
-        <div id="result" class="result"></div>
-        <form action="/create/video" method="post" enctype="multipart/form-data" id="postForm">
-        <input type="text" name="uid" value="<?=isLoggedIn()?>" style="display: none;">
-        <label class="mt-3">Название видео</label>
-        <input type="text" class="form-control" name="namevideo"></input>
-        <label class="mt-3">Описание видео</label>
-        <textarea type="text" class="form-control" name="bodyvideo"></textarea><br>
-        <input name="filebody" type="file"><br>
-        <button type="submit" id="createpost" class="btn btn-primary mb-3 mt-3">Создать</button>
-        </form>
-
+        <h2>Кошелёк</h2><button class="btn-r" style="background: rgb(89,48,255); background: linear-gradient(90deg, rgba(89,48,255,1) 0%, rgba(26,96,255,1) 100%); color:aliceblue;">Пополнить</button><br>
+        <p>На балансе сейчас:</p>
+        <h1>13.66 TON<img src="/static/img/ton.png" style="margin-bottom: 10px;" width="45"></h1>
+        <?php
+        /*$groups = DB::query('SELECT * FROM groups WHERE owner_id=:id', array(':id'=>isLoggedIn()));
+        foreach ($groups as $g) {
+            $link = $g['link'];
+            $namegroup = $g['namegroup'];
+            $photo = $g['photo'];
+            echo '<div class="card">
+            <div class="card-body">
+                <img src="'.$photo.'" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; border: 150 solid #000;" class="fill-current mp-5">
+                <h5 href="testings" class="col-10 ml-3 d-inline-block font-weight-bold"><a href="/g/'.$link.'/settings">'.$namegroup.'</a></h5>
+            </div>
+        </div><br>';
+        }*/
+        ?>
+        
+        
+        
     </div>
 </body>
 

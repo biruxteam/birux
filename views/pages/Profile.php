@@ -8,6 +8,15 @@ $photo = DB::query('SELECT photo FROM users WHERE username=:username', array(':u
 $about = DB::query('SELECT about FROM users WHERE username=:username', array(':username'=>$username))[0]['about'];
 $pinnedpost = DB::query('SELECT pinnedpost_id FROM users WHERE username=:username', array(':username'=>$username))[0]['pinnedpost_id'];
 $usernamedb = DB::query('SELECT username FROM users WHERE username=:username', array(':username'=>$username))[0]['username'];
+$lastonline = DB::query('SELECT online FROM users WHERE id=:id', array(':id'=>$id))[0]['online'];
+
+$subscribersbd = DB::query('SELECT subscribers_pr FROM privacy_tokens WHERE user_id=:user_id', array(':user_id'=>$id))[0]['subscribers_pr'];
+
+
+$pz0 = $_ENV['MYSQL_PASSWORD'];
+$logz = $_ENV['MYSQL_NAME'];
+$reqz = "mysql:host=".$_ENV['MYSQL_HOST'].";dbname=".$_ENV['MYSQL_DB'].";charset=utf8";
+$dbh1 = new PDO($reqz, $logz, $pz0);
 
 if ($usernamedb != $username) {
     die(include($_SERVER['DOCUMENT_ROOT'] . '/views/pages/Errors/UserNotFound.php'));
@@ -76,7 +85,9 @@ if ($usernamedb != $username) {
                     console.log(response);
                     if (jsonData.subscriber == "1") {
                         $("#subscribe").html('<button id="sbbtn" type="submit" style="margin-right: 15px;" class="btn btn-primary ml-5">Отписаться</button>');
+                        $("#subs").html('<a id="subs" class="col-sm-10" style="color: aliceblue;">'+jsonData.btntranslate+'</a>');
                     } else if (jsonData.subscriber == "0") {
+                        $("#subs").html('<a id="subs" class="col-sm-10" style="color: aliceblue;">'+jsonData.btntranslate+'</a>');
                         $("#subscribe").html('<button id="sbbtn" type="submit" style="margin-right: 15px;" class="btn btn-primary ml-5">Подписаться</button>');
                     }
                 }
@@ -89,14 +100,36 @@ if ($usernamedb != $username) {
     <div class="container mt-3">
         <img width='75' height='75' src='<?php echo $photo; ?>' style='object-fit: cover; width: 55px; height: 55px; border-radius: 150px;' class='fill-current mp-10 mb-4'>
         <p style="padding-left: 5px;" href='testings' class='col-sm-10 d-inline-block font-weight-bold'><a href='/<?php echo $username; ?>' style="font-size: 20px;"><b><?php echo $fname;?>&nbsp;<?php echo $lname;?></b><?php if ($verified === '1') { ?> <img style="margin-left: 0px;" width="18" src="/static/img/verified.png" alt=""> <?php } ?></a>
-        <br><a style="color: aliceblue;" href=''>В сети • 15 подписчиков</a>          </p>   
+        <?php
+                                                        $usid = DB::query('SELECT id FROM users WHERE username=:username', array(':username'=>$_GET['username']))[0]['id'];
+                                                        $q = "SELECT COUNT(1) FROM followers WHERE `user_id`=$id"; 
+                                                        $q1 = $dbh1->prepare($q);
+                                                        $q1 -> execute(); 
+                                                        $countusers = $q1->fetch(); 
+                                                        $countusers = $countusers[0];
+
+                                                        ?>
+        <?php if ($subscribersbd === "0") { ?>
+            <br><a id="subs" class="col-sm-10" style="color: aliceblue;" href=''><?php echo $countusers; if ($countusers == '1') { ?> подписчик
+                                                            <?php } else if ($countusers == '2') { ?> подписчика
+                                                            <?php } else if ($countusers == '3') { ?> подписчика
+                                                            <?php } else if ($countusers == '4') { ?> подписчика
+                                                            <?php } else { ?> подписчиков <?php } ?> </a>
+                                                            <a>
+                                                            <?php
+                                                            if(time()-60 <= $lastonline) { ?> • В сети <?php } else { ?> • был в сети <?php echo zmdate($lastonline); } ?></a></p>
+                                                        <?php } ?>
     <?php
     if ($id != isLoggedIn()) { ?>
     <div id="resultt"></div>
         <form id="postForm">
         <input type="text" name="uid" value="<?=$id?>" style="display: none;">
         <div id="subscribe">
+        <?php if (!DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$id, ':followerid'=>isLoggedIn()))) { ?>
         <button subscribe-id="<?=$id?>" id="sbbtn" type="submit" style="margin-right: 15px;" class="btn btn-primary ml-5">Подписаться</button>
+        <?php } else { ?>
+        <button subscribe-id="<?=$id?>" id="sbbtn" type="submit" style="margin-right: 15px;" class="btn btn-primary ml-5">Отписаться</button>
+        <?php } ?>
         </div>
         </form>
     <?php } ?>
@@ -119,7 +152,7 @@ if ($usernamedb != $username) {
             <h5 class="card-title mb-3">Закреплённый пост</h5>
             
                 <img src="<?php echo $photo; ?>" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; margin-top: -33px;" class="fill-current mp-5">
-                <h5 style="margin-bottom: -0px;" href="testings" class="col-10 ml-3  d-inline-block font-weight-bold"><a href="/<?php echo $username; ?>"><?php echo $fname?>&nbsp;<?php echo $lname; ?></a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-10 d-inline-block font-weight-bold"><?php echo zmdate($pinnedpost_postedat); ?></p></h5>
+                <h5 style="margin-bottom: -0px;" href="testings" class="col-sm-10 ml-3  d-inline-block font-weight-bold"><a href="/<?php echo $username; ?>"><?php echo $fname?>&nbsp;<?php echo $lname; ?></a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-sm-10 d-inline-block font-weight-bold"><?php echo zmdate($pinnedpost_postedat); ?></p></h5>
                 
                 <p href="testings" class="col-10 d-inline-block font-weight-bold"><?php echo $pinnedpost_body; ?></p>
                 <div class="row row-cols-auto">
@@ -172,7 +205,7 @@ if ($usernamedb != $username) {
             <div class="card-body">
             
                 <img src="'.$photo.'" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; margin-top: -33px;" class="fill-current mp-5">
-                <h5 style="margin-bottom: -0px;" href="testings" class="col-10 ml-3  d-inline-block font-weight-bold"><a href="/'.$username.'">'.$fname.'&nbsp;'.$lname.'</a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-10 d-inline-block font-weight-bold">'.zmdate($p['posted_at']).'</p></h5>
+                <h5 style="margin-bottom: -0px;" href="testings" class="col-sm-10 ml-3  d-inline-block font-weight-bold"><a href="/'.$username.'">'.$fname.'&nbsp;'.$lname.'</a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-sm-10 d-inline-block font-weight-bold">'.zmdate($p['posted_at']).'</p></h5>
                 
                 <p href="testings" class="col-10 d-inline-block font-weight-bold">'.$p['body'].'</p>
                 <div class="row row-cols-auto">

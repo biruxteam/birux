@@ -711,7 +711,7 @@ input:checked+.slider:before {
 }
 :root {
     --header-height: 3.5rem;
-    --nav-width: 219px;
+    --nav-width: 230px;
   
     /*========== Colors ==========*/
     --first-color: #367cff;
@@ -853,4 +853,14 @@ th, td {
 
 .warningnewt {
     color: #5c4609 !important;
+}
+
+.alert-neonnew {
+  background-color: #3e49af;
+  border-radius: 15px !important;
+  color: #fff;
+}
+
+.neonnewt {
+  color: #c8cbdf !important;
 }

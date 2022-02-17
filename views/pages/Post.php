@@ -1,5 +1,6 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/app/Services/Date.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/app/Controllers/PostsComments/CreateController.php');
 if (!DB::query('SELECT id FROM posts WHERE id=:id', array(':id'=>$id))[0]['id']) {
     die(include($_SERVER['DOCUMENT_ROOT'] . '/views/pages/Errors/PostNotFound.php'));
 }
@@ -96,14 +97,6 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
                     if ($user_id === isLoggedIn()) {
                     ?>
                     <div class="col">
-                    <div class="dropdown">
-                    <a id="dropdownMenuLink" href="#" data-bs-toggle="dropdown" style="float: left;" class="nav__link"><i class="bx bx-dots-horizontal-rounded nav__icon"></i><span class="nav__namec ml-3"></span></a>
-
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a data-bs-toggle="modal" data-bs-target="#exampleModal" href="#" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-pin nav__icon"></i><span class="nav__namec ml-3">Закрепить</span></a></li>
-                        <li><a href="#" style="float: left; color: #ff1548;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-trash nav__icon"></i><span class="nav__namec ml-3">Удалить</span></a></li>
-                    </ul>
-                </div>
                         
                     </div>
                     <?php } ?>
@@ -120,12 +113,13 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
         <div class="card mb-3">
         <div class="card-body">
 
-                <form id="postForm">
+                <form method="POST">
                     <input style="display: none;" name="token" value="<?php echo $_TOKEN; ?>">
-                    <input style="display: none;" name="userid" value="<?php echo isLoggedIn(); ?>">
+                    <input style="display: none;" name="uid" value="<?php echo isLoggedIn(); ?>">
                     <textarea class="form-control" name="bodypost" placeholder="Вы можете написать свою историю" cols="15" rows="5"></textarea>
                     <div class="col-md-auto d-flex align-items-center">
-                    <button style="margin-right: 15px;" type="submit" id="createpost" class="btn btn-primary mb-3 mt-3">Опубликовать</button>
+                    <button name="submit" style="margin-right: 15px;" type="submit" id="createpost" class="btn btn-primary mb-3 mt-3">Опубликовать</button>
+                    <input type="file" name="filebody" style="display: none;">
                     
                     </div>
                     
@@ -142,7 +136,7 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
         use Astrotomic\Twemoji\Replacer;
 
 
-        $posts = DB::query('SELECT * FROM posts_comments WHERE post_id=:id', array(':id'=>$id));
+        $posts = DB::query('SELECT * FROM posts_comments WHERE post_id=:id ORDER BY id DESC', array(':id'=>$id));
         foreach ($posts as $p) {
             $fname = DB::query('SELECT fname FROM users WHERE id=:id', array(':id' => $p['user_id']))[0]['fname'];
             $lname = DB::query('SELECT lname FROM users WHERE id=:id', array(':id' => $p['user_id']))[0]['lname'];
@@ -167,26 +161,25 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
                 }
                 echo '
                 <div class="row row-cols-auto">
-                    <div class="col">';
+                    <!--div class="col">';
             if (DB::query('SELECT user_id FROM posts_likes WHERE user_id=:userid AND post_id=:postid', array(':userid' => isLoggedIn(), ':postid' => $p['id']))[0]['user_id']) {
                 echo '<a data-id="' . $p['id'] . '" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-like nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">' . $p['likes'] . '</span></a>';
             } else {
                 echo '<a data-id="' . $p['id'] . '" style="float: left;" class="nav__link"><i class="bx bx-like nav__icon"></i><span class="nav__namec ml-3">' . $p['likes'] . '</span></a>';
             }
             echo '
-                    </div>
-                    <div class="col">
-                        <a href="/post/' . $p['id'] . '" style="float: left;" class="nav__link"><i class="bx bx-comment-detail nav__icon"></i><span class="nav__namec ml-3">' . $p['comments'] . '</span></a>
-                    </div>';
+                    </div-->
+                    <!--div class="col">
+                        <a href="/post/' . $p['id'] . '" style="float: left;" class="nav__link"><i class="bx bx-dislike nav__icon"></i><span class="nav__namec ml-3">' . $p['comments'] . '</span></a>
+                    </div-->';
                 if ($p['user_id'] === isLoggedIn() || $photopost_exists === "1" || $audiopost_exists === "1" || $videopost_exists === "1") {
                 echo '
-                    <div class="col">
+                    <!--div class="col">
                     <div class="dropdown">
                     <a id="dropdownMenuLink" href="#" data-bs-toggle="dropdown" style="float: left;" class="nav__link"><i class="bx bx-dots-horizontal-rounded nav__icon"></i><span class="nav__namec ml-3"></span></a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <form method="post">';
-                        echo '<li><a href="/act?act=json_post&postid='.$p['id'].'" name="jsondownload" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-download nav__icon"></i><span class="nav__namec ml-3">Скачать JSON поста</span></a></li>';
                         if ($photopost_exists === "1") {
                             echo '<li><a href="'.$p['photopost'].'" name="pinpost" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-download nav__icon"></i><span class="nav__namec ml-3">Скачать оригинал</span></a></li>';
                         } else if ($audiopost_exists === "1") {
@@ -196,7 +189,6 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
                         }
                         if ($p['user_id'] === isLoggedIn()) {
                         echo '
-                        <li><a href="/act?act=pin&postid='.$p['id'].'&token='.$_TOKEN.'" name="pinpost" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-pin nav__icon"></i><span class="nav__namec ml-3">Закрепить</span></a></li>
                         <li><a data-bs-toggle="modal" data-bs-target="#exampleModal'.$p['id'].'" style="float: left; color: #ff1548;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-trash nav__icon"></i><span class="nav__namec ml-3">Удалить</span></a></li>
                         '; }
                         echo '
@@ -204,7 +196,7 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
                     </ul>
                 </div>
                         
-                    </div>'; }
+                    </div-->'; }
             echo '
                 </div>
 

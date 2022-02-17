@@ -1,8 +1,8 @@
 <?php
-    use Tracy\Debugger;
+    //use Tracy\Debugger;
     $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'], '.env');
     $dotenv->load();
-    if ($_ENV['DEBUG'] === 'false') {
+    /*if ($_ENV['DEBUG'] === 'false') {
         Debugger::enable(Debugger::PRODUCTION);
         Debugger::$logSeverity = E_ERROR;
         Debugger::$showBar = false;
@@ -10,7 +10,7 @@
         Debugger::enable();
         Debugger::$logSeverity = E_ERROR;
         Debugger::$showBar = true;
-    }
+    }*/
 
 
 class DB {

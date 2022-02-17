@@ -17,7 +17,7 @@ $postbody = $_POST['bodypost'];
 $file = $_FILES['filebody'];
 $fileName = generateRandomString();
 $filePath = pathinfo($file['name']);
-            if ($_FILES['filebody']['error'] != 4) {
+            /*if ($_FILES['filebody']['error'] != 4) {
                 if ($filePath['extension'] === 'png' || $filePath['extension'] === 'jpg' || $filePath['extension'] === 'gif' || $filePath['extension'] === 'jpeg') {
                     $uploadDir = $_SERVER['DOCUMENT_ROOT']."/cdn/images";
                     move_uploaded_file($file['tmp_name'], $_SERVER['DOCUMENT_ROOT']."/cdn/images/".$fileName.".".$filePath['extension']."");
@@ -48,10 +48,12 @@ $filePath = pathinfo($file['name']);
                     }
                     DB::query('INSERT INTO posts VALUES (\'0\', :postbody, :time, :userid, 0, :photo, :audio, :video, :ppexists, :audioexists, :videoexists, :views, :comments, :repost)', array(':postbody'=>$postbody, ':userid'=>$_POST['uid'], ':time'=>time(), ':photo'=>'NONE', 'audio'=>'NONE', ':video'=>$photourl, ':ppexists'=>'0', ':audioexists'=>'0', ':videoexists'=>'1', ':views'=>'0', ':comments'=>'0', ':repost'=>'0'));
                     header('Location: /feed');
+                }*/
+                if (isset($_POST['submit'])) {
+                DB::query('INSERT INTO posts_comments VALUES (\'0\', :postid, :userid, :likes, :dislikes, :time, :postbody, :photo, :ppexists, :audio, :audioexists, :video, :videoexists, :sticker, :stickerexists)', array('postid'=>$id, ':postbody'=>$postbody, ':userid'=>$_POST['uid'], ':time'=>time(), ':likes'=>'0', ':dislikes'=>'0', ':photo'=>'NONE', 'audio'=>'NONE', ':video'=>'NONE', ':ppexists'=>'0', ':audioexists'=>'0', ':videoexists'=>'0', ':sticker'=>'NONE', ':stickerexists'=>'0'));
+                DB::query('UPDATE posts SET comments=comments+1 WHERE id=:postid', array(':postid'=>$id));
                 }
-            } else {
-                DB::query('INSERT INTO posts VALUES (\'0\', :postbody, :time, :userid, 0, :photo, :audio, :video, :ppexists, :audioexists, :videoexists, :views, :comments, :repost)', array(':postbody'=>$postbody, ':userid'=>$_POST['uid'], ':time'=>time(), ':photo'=>'NONE', 'audio'=>'NONE', ':video'=>'NONE', ':ppexists'=>'0', ':audioexists'=>'0', ':videoexists'=>'0', ':views'=>'0', ':comments'=>'0', ':repost'=>'0'));
-            }
+
 
 
 

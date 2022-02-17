@@ -18,7 +18,7 @@ $data = json_decode(file_get_contents($query));
                     
                     if (strlen($lname) >= 2 && strlen($lname) <= 20) {
 
-                    if (preg_match('/[a-zA-Z0-9_]+/', $username)) {
+                    if (!preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-]/', $username)) {
 
                             if (strlen($password) >= 5 && strlen($password) <= 120) {
 

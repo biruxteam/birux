@@ -16,26 +16,53 @@ $sid = $_POST['uid'];
                     $q1 -> execute(); 
                     $countusers = $q1->fetch(); 
                     $countusers = $countusers[0];
+
+                    if ($countusers == '1') { 
+                            $countusers.' подписчик'; 
+                        } else if ($countusers == '2') { 
+                                $btnsb = $countusers.' подписчика'; 
+                        } else if ($countusers == '3') { 
+                                $btnsb = $countusers.' подписчика'; 
+                        } else if ($countusers == '4') { 
+                                $btnsb = $countusers.' подписчика'; 
+                        } else { 
+                                $btnsb = $countusers.' подписчиков'; 
+                        } 
                     
                     echo json_encode(array(
                         'subscribers' => $countusers,
                         'subscriber' => 1,
                         'error' => 0,
-                        'sid' => $sid
+                        'sid' => $sid,
+                        'btntranslate' => $btnsb
                     ));
                     
             } else {
                     DB::query('DELETE FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$_POST['uid'], ':followerid'=>isLoggedIn()));
-                    /*$q = "SELECT COUNT(1) FROM followers WHERE `user_id`=$sid"; 
+                    $q = "SELECT COUNT(1) FROM followers WHERE `user_id`=$sid"; 
                     $q1 = $dbh1->prepare($q);
                     $q1 -> execute(); 
                     $countusers = $q1->fetch(); 
-                    $countusers = $countusers[0];*/
+                    $countusers = $countusers[0];
+
+                    if ($countusers == '1') { 
+                        $countusers.' подписчик'; 
+                    } else if ($countusers == '2') { 
+                            $btnsb = $countusers.' подписчика'; 
+                    } else if ($countusers == '3') { 
+                            $btnsb = $countusers.' подписчика'; 
+                    } else if ($countusers == '4') { 
+                            $btnsb = $countusers.' подписчика'; 
+                    } else { 
+                            $btnsb = $countusers.' подписчиков'; 
+                    } 
+                    
                     echo json_encode(array(
                         'subscribers' => $countusers,
                         'subscriber' => 0,
                         'error' => 0,
-                        'sid' => $sid
+                        'sid' => $sid,
+                        'btntranslate' => $btnsb
                     ));
             }
     }

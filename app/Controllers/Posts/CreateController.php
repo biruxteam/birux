@@ -46,11 +46,16 @@ $filePath = pathinfo($file['name']);
                     } else {
                         $photourl = "/cdn/video/".$fileName.".".$filePath['extension']."";
                     }
+                    if (strlen($postbody) > 1) {
                     DB::query('INSERT INTO posts VALUES (\'0\', :postbody, :time, :userid, 0, :photo, :audio, :video, :ppexists, :audioexists, :videoexists, :views, :comments, :repost)', array(':postbody'=>$postbody, ':userid'=>$_POST['uid'], ':time'=>time(), ':photo'=>'NONE', 'audio'=>'NONE', ':video'=>$photourl, ':ppexists'=>'0', ':audioexists'=>'0', ':videoexists'=>'1', ':views'=>'0', ':comments'=>'0', ':repost'=>'0'));
                     header('Location: /feed');
+                    }
                 }
             } else {
+                if (strlen($postbody) > 1) {
                 DB::query('INSERT INTO posts VALUES (\'0\', :postbody, :time, :userid, 0, :photo, :audio, :video, :ppexists, :audioexists, :videoexists, :views, :comments, :repost)', array(':postbody'=>$postbody, ':userid'=>$_POST['uid'], ':time'=>time(), ':photo'=>'NONE', 'audio'=>'NONE', ':video'=>'NONE', ':ppexists'=>'0', ':audioexists'=>'0', ':videoexists'=>'0', ':views'=>'0', ':comments'=>'0', ':repost'=>'0'));
+                header('Location: /feed');
+                }
             }
 
 

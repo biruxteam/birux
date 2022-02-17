@@ -8,6 +8,7 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
     die(include($_SERVER['DOCUMENT_ROOT'] . '/views/pages/Errors/Maintenance.php'));
 }
 ?>
+<link rel="stylesheet" href="https://unpkg.com/@tabler/icons@latest/iconfont/tabler-icons.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
         <div class="themetype" id="themetype"><?php if ($_THEMETYPE === "1") { ?> <link href="/static/css/appx.css" rel="stylesheet"> <?php } else { ?> <link href="/static/css/appx.dark.css" rel="stylesheet"> <?php } ?></div>
         <link rel="stylesheet" href="/static/css/sidebar.css">
@@ -23,7 +24,6 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                         <li><a href="/<?php echo $_USERNAME; ?>" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class='bx bx-user nav__icon'></i><span class="nav__namec ml-3">Профиль</span></a></li>
                         <!--li><a href="/servicepages" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class='bx bx-user nav__icon'></i><span class="nav__namec ml-3">Service Pages</span></a></li-->
                         <li><a href="/settings" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class='bx bx-cog nav__icon'></i><span class="nav__namec ml-3">Настройки</span></a></li>
-                        <li><a href="/settings" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class='bx bx-info-circle nav__icon'></i><span class="nav__namec ml-3">Об инстансе Birux</span></a></li>
                         <li><a href="/logout" style="float: left; color: #ff1548;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class='bx bx-log-out nav__icon'></i><span class="nav__namec ml-3">Выйти</span></a></li>
 </div>
                     </ul>
@@ -51,7 +51,7 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                         <div class="nav__items">
                             <h3 class="nav__subtitle">Главная</h3>
 
-                            <div class="nav__dropdown">
+                            <!--div class="nav__dropdown">
                                 <a href="#" class="nav__link">
                                 <i class='bx bx-home nav__icon' ></i>
                                 <span class="nav__name">Лента новостей</span>
@@ -66,14 +66,19 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                                     </div>
                                 </div>
 
-                            </div>
+                            </div-->
 
-                            <!--a href="/feed" class="nav__link active">
+                            <a href="/feed" class="nav__link <?php if ($_SERVER['REQUEST_URI'] === '/feed') { ?> active <?php } ?>">
                                 <i class='bx bx-home nav__icon'></i>
                                 <span class="nav__name">Лента новостей</span>
-                            </a-->
+                                <?php
 
-                            <a href="/<?php echo $_USERNAME; ?>" class="nav__link">
+
+
+                                ?>
+                            </a>
+
+                            <a href="/<?php echo $_USERNAME; ?>" class="nav__link <?php if ($_SERVER['REQUEST_URI'] === '/'.$_USERNAME.'') { ?> active <?php } ?>">
                                 <i class='bx bx-user nav__icon'></i>
                                 <span class="nav__name">Профиль</span>
                             </a>
@@ -86,7 +91,7 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                             <div class="nav__dropdown">
                                 <a href="#" class="nav__link">
                                 <i class='bx bx-plus-circle nav__icon' ></i>
-                                <span class="nav__name">Создать контент</span>
+                                <span class="nav__name">Создать</span>
                                     <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
                                 </a>
 
@@ -99,8 +104,11 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                                 </div>
 
                             </div>
+                            <!--a href="/feed" class="nav__link">
+                                <i class='ti ti-diamond nav__icon' ></i>
+                                <span class="nav__name">Создать NEON <span class="badge rounded-pill bg-primary">NEW</span></span>
+                            </a-->
                         </div>
-
                         <div class="nav__items">
                             <h3 class="nav__subtitle">Меню</h3>
 
@@ -115,8 +123,10 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                                     <div class="nav__dropdown-content">
                                         <a href="/explore/users" class="nav__dropdown-item">Люди</a>
                                         <a href="/explore/groups" class="nav__dropdown-item">Сообщества</a>
-                                        <a href="#" class="nav__dropdown-item">Видео</a>
-                                        <a href="#" class="nav__dropdown-item">Каналы</a>
+                                        <!--a href="#" class="nav__dropdown-item">Видео</a>
+                                        <a href="#" class="nav__dropdown-item">Каналы</a-->
+                                        <!--a href="#" class="nav__dropdown-item">NEON: NFT</a>
+                                        <a href="#" class="nav__dropdown-item">NEON: Посты</a-->
                                     </div>
                                 </div>
 
@@ -126,10 +136,10 @@ if ($_ENV['MAINTENANCE_MODE'] === 'true') {
                                 <i class='bx bx-bell nav__icon'></i>
                                 <span class="nav__name">Уведомления</span>
                             </a>
-                            <a href="#" class="nav__link">
+                            <!--a href="#" class="nav__link">
                                 <i class='bx bx-broadcast nav__icon'></i>
                                 <span class="nav__name">Network Feed</span>
-                            </a>
+                            </a-->
                         </div>
                     </div>
                 </div>

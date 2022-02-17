@@ -3,6 +3,9 @@ require_once $_SERVER['DOCUMENT_ROOT']."/app/Services/Router.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/app/Services/DB.php";
 include($_SERVER['DOCUMENT_ROOT'] . '/app/Services/Server.php');
 
+/* Web3 */
+get('/wallet', 'views/pages/Wallet.php');
+
 
 /* User Pages */
 get('/', 'views/pages/Index.php');
@@ -32,6 +35,8 @@ get('/welcome', 'views/pages/Welcome.php');
 get('/create/post', 'views/pages/Create/Post.php');
 get('/create/group', 'views/pages/Create/Group.php');
 get('/create/video', 'views/pages/Create/Video.php');
+post('/create/video', 'views/pages/Create/Video.php');
+get('/neon/main', 'views/pages/Web3/CreateNeon.php');
 
 //Explore
 get('/explore/users', 'views/pages/Explore/Users.php');
@@ -50,6 +55,7 @@ post('/exapi/birux.groupCreate', 'views/pages/Api/External/Groups/Create.php');
 post('/exapi/birux.postsCreate', 'views/pages/Api/External/Posts/Create.php');
 post('/exapi/birux.aboutChange', 'views/pages/Api/External/About.php');
 post('/exapi/birux.postsLike', 'views/pages/Api/External/Posts/Like.php');
+post('/exapi/birux.videoLike', 'views/pages/Api/External/Video/Reaction.php');
 post('/exapi/birux.themeChange', 'views/pages/Api/External/Personalization.php');
 get('/exapi/birux.postsLike', 'views/pages/Api/External/Posts/Like.php');
 post('/api/posts.Get', 'views/pages/Api/Public/Posts/Get.php');
@@ -75,6 +81,7 @@ get('/error', 'views/pages/Errors/ExternalError.php');
 get('/servicepages', 'views/pages/Dev/ServicePages.php');
 get('/logout', 'app/Services/Logout.php');
 get('/post/$id', 'views/pages/Post.php');
+post('/post/$id', 'views/pages/Post.php');
 get('/video/$id', 'views/pages/Video.php');
 get('/g/$namegroup', 'views/pages/Group.php');
 get('/video/$id', 'views/pages/Video.php');

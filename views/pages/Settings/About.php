@@ -48,7 +48,7 @@
 </nav>
 <div id="resultt"></div>
 <form id="postForm">
-<textarea class="form-control" name="bodyabout" placeholder="Расскажите о себе, например: Программист из Запорожья, 22 года." cols="30" rows="10"></textarea>
+<textarea class="form-control" name="bodyabout" placeholder="Расскажите о себе, например: Программист из Запорожья, 22 года." cols="30" rows="10" value="<?php echo DB::query('SELECT about FROM users WHERE id=:id', array(':id'=>isLoggedIn()))[0]['about']; ?>"></textarea>
 <button type="submit" id="createpost" class="btn btn-primary mb-3 mt-3">Изменить</button>
 </form>
     </div>

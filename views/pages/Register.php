@@ -85,7 +85,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/app/Core/Tracy.php');
                 </div>
             <div class="mb-3 mt-3">
                 <label for="exampleFormControlInput1" class="form-label">Пароль</label>
-                <input name="password" type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                <input name="password" type="password" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
             </div>
             
             </div>

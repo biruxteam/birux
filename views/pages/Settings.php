@@ -29,7 +29,7 @@
                 <h5 href='testings' class='col-10 ml-3 d-inline-block font-weight-bold'><a href='/settings/about'>Изменить описание профиля</a></h5>
             </div>
         </div><br>
-        <div class="card">
+        <!--div class="card">
             <div class="card-body">
                 <img width='45' height='45' src='/static/img/profileedit.png' style='object-fit: cover; width: 45px; height: 45px; border-radius: 150px; border: 150 solid #000;' class='fill-current mp-5'>
                 <h5 href='testings' class='col-10 ml-3 d-inline-block font-weight-bold'><a href='@" . $username_r . "'>Редактировать данные профиля</a></h5>
@@ -46,14 +46,14 @@
                 <img width='45' height='45' src='/static/img/profileprivacy.png' style='object-fit: cover; width: 45px; height: 45px; border-radius: 150px; border: 150 solid #000;' class='fill-current mp-5'>
                 <h5 href='testings' class='col-10 ml-3 d-inline-block font-weight-bold'><a href='@" . $username_r . "'>Настройки приватности</a></h5>
             </div>
-        </div><br>
+        </div><br-->
         <div class="card">
             <div class="card-body">
                 <img width='45' height='45' src='/static/img/personalization.png' style='object-fit: cover; width: 45px; height: 45px; border-radius: 150px; border: 150 solid #000;' class='fill-current mp-5'>
                 <h5 href='testings' class='col-10 ml-3 d-inline-block font-weight-bold'><a href='/settings/personalization'>Персонализация</a></h5>
             </div>
         </div><br>
-        <div class="card">
+        <!--div class="card">
             <div class="card-body">
                 <img width='45' height='45' src='/static/img/emojistatus.png' style='object-fit: cover; width: 45px; height: 45px; border-radius: 150px; border: 150 solid #000;' class='fill-current mp-5'>
                 <h5 href='testings' class='col-10 ml-3 d-inline-block font-weight-bold'><a href='@" . $username_r . "'>Emoji-статусы</a></h5>
@@ -75,7 +75,7 @@
                                 <time style="font-size:small" class="timeago text-small" datetime="2022-02-08 15:43:42">15:43 - (February 8th, 2022 )</time>
                             </div>
                         </div>
-                    </div>
+                    </div-->
         
     </div>
 </body>

@@ -84,8 +84,9 @@ border-color: #698CD0;
                 </div>
                 <div class="col-sm-6">
                     <label for="exampleFormControlInput1" class="form-label">Пароль</label>
-                    <input name="password" type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                </div>
+                    <input name="password" type="password" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                </div><br>
+                <a style="color: aliceblue;" href="/reg">Нет аккаунта? Зарегистрируйтесь!</a>
             </div>
             <button type="submit" id="register" class="btn btn-primary mb-3 mt-3 btn-lg">Войти в аккаунт</button>
         </form>

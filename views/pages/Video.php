@@ -3,14 +3,16 @@ include($_SERVER['DOCUMENT_ROOT'] . '/app/Services/Date.php');
 if (!DB::query('SELECT id FROM video WHERE id=:id', array(':id'=>$id))[0]['id']) {
     die(include($_SERVER['DOCUMENT_ROOT'] . '/views/pages/Errors/VideoNotFound.php'));
 }
-$user_id = DB::query('SELECT user_id FROM posts WHERE id=:id', array(':id'=>$id))[0]['user_id'];
-$body = DB::query('SELECT body FROM posts WHERE id=:id', array(':id'=>$id))[0]['body'];
+$user_id = DB::query('SELECT user_id FROM video WHERE id=:id', array(':id'=>$id))[0]['user_id'];
+$body = DB::query('SELECT name FROM video WHERE id=:id', array(':id'=>$id))[0]['name'];
 $fname = DB::query('SELECT fname FROM users WHERE id=:id', array(':id'=>$user_id))[0]['fname'];
 $lname = DB::query('SELECT lname FROM users WHERE id=:id', array(':id'=>$user_id))[0]['lname'];
 $username = DB::query('SELECT username FROM users WHERE id=:id', array(':id'=>$user_id))[0]['username'];
-$likes = DB::query('SELECT likes FROM posts WHERE id=:id', array(':id'=>$id))[0]['likes'];
-$comments = DB::query('SELECT comments FROM posts WHERE id=:id', array(':id'=>$id))[0]['comments'];
-$posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>$id))[0]['posted_at'];
+$likes = DB::query('SELECT likes FROM video WHERE id=:id', array(':id'=>$id))[0]['likes'];
+$dislikes = DB::query('SELECT dislikes FROM video WHERE id=:id', array(':id'=>$id))[0]['dislikes'];
+//$comments = DB::query('SELECT comments FROM video WHERE id=:id', array(':id'=>$id))[0]['comments'];
+$posted_at = DB::query('SELECT date FROM video WHERE id=:id', array(':id'=>$id))[0]['date'];
+$sourceurl = DB::query('SELECT sourceurl FROM video WHERE id=:id', array(':id'=>$id))[0]['sourceurl'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,40 +32,75 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <body>
 
-    <script>
-          $(document).ready(function() {
+<script>
+        $(document).ready(function() {
 
 
 
 
-                        
 
-                        $('[data-id]').click(function() {
-                                var buttonid = $(this).attr('data-id');
-                                $.ajax({
 
-                                        type: "POST",
-                                        url: "/exapi/birux.postsLike?id=" + $(this).attr('data-id'),
-                                        processData: false,
-                                        contentType: "application/json",
-                                        data: '',
-                                        success: function(r) {
-                                                var res = JSON.parse(r)
-                                                if (res.YourLike ===  0) {
-                                                    $("[data-id='"+buttonid+"']").html('<a data-id="'+buttonid+'" style="float: left;" class="nav__link"><i class="bx bx-like nav__icon"></i><span class="nav__namec ml-3">'+res.Likes+'</span></a>')
-                                                } else if (res.YourLike === 1) {
-                                                    $("[data-id='"+buttonid+"']").html('<a data-id="'+buttonid+'" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-like nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">'+res.Likes+'</span></a>')
-                                                }
-                                        },
-                                        error: function(r) {
-                                                console.log(r)
-                                        }
+            $('[data-id]').click(function() {
+                var buttonid = $(this).attr('data-id');
+                $.ajax({
 
-                                });
-                        })
+                    type: "POST",
+                    url: "/exapi/birux.videoLike?likeid=1&id=" + $(this).attr('data-id'),
+                    processData: false,
+                    contentType: "application/json",
+                    data: '',
+                    success: function(r) {
+                        var res = JSON.parse(r)
+                        if (res.yourlike === 0) {
+                            $("[data-id='" + buttonid + "']").html('<a data-id="' + buttonid + '" style="float: left;" class="nav__link"><i class="bx bx-like nav__icon"></i><span class="nav__namec ml-3">' + res.likes + '</span></a>')
+                        } else if (res.yourlike === 1) {
+                            $("[data-id='" + buttonid + "']").html('<a data-id="' + buttonid + '" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-like nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">' + res.likes + '</span></a>')
+                        }
+                        if (res.yourdislike === 0) {
+                            $("[datad-id='" + buttonid + "']").html('<a datad-id="' + buttonid + '" style="float: left;" class="nav__link"><i class="bx bx-dislike nav__icon"></i><span class="nav__namec ml-3">' + res.dislikes + '</span></a>')
+                        } else if (res.yourdislike === 1) {
+                            $("[datad-id='" + buttonid + "']").html('<a datad-id="' + buttonid + '" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-dislike nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">' + res.dislikes + '</span></a>')
+                        }
+                    },
+                    error: function(r) {
+                        console.log(r)
+                    }
 
-});
+                });
+            })
+
+            $('[datad-id]').click(function() {
+                var buttonid = $(this).attr('datad-id');
+                $.ajax({
+
+                    type: "POST",
+                    url: "/exapi/birux.videoLike?dislikeid=1&id=" + $(this).attr('datad-id'),
+                    processData: false,
+                    contentType: "application/json",
+                    data: '',
+                    success: function(r) {
+                        var res = JSON.parse(r)
+                        if (res.yourlike === 0) {
+                            $("[data-id='" + buttonid + "']").html('<a data-id="' + buttonid + '" style="float: left;" class="nav__link"><i class="bx bx-like nav__icon"></i><span class="nav__namec ml-3">' + res.likes + '</span></a>')
+                        } else if (res.yourlike === 1) {
+                            $("[data-id='" + buttonid + "']").html('<a data-id="' + buttonid + '" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-like nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">' + res.likes + '</span></a>')
+                        }
+                        if (res.yourdislike === 0) {
+                            $("[datad-id='" + buttonid + "']").html('<a datad-id="' + buttonid + '" style="float: left;" class="nav__link"><i class="bx bx-dislike nav__icon"></i><span class="nav__namec ml-3">' + res.dislikes + '</span></a>')
+                        } else if (res.yourdislike === 1) {
+                            $("[datad-id='" + buttonid + "']").html('<a datad-id="' + buttonid + '" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-dislike nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">' + res.dislikes + '</span></a>')
+                        }
+                    },
+                    error: function(r) {
+                        console.log(r)
+                    }
+
+                });
+            })
+
+        });
     </script>
+    
     <?php include($_SERVER['DOCUMENT_ROOT'] . '/views/components/Sidebar.php'); ?>
     <div class="container mt-3">
         <h2>Видео</h2>
@@ -73,7 +110,7 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
 
             <div class="card mb-3">
             <div class="card-body">
-            <center><video src="/static/videoplayback.mp4" class="w-50" controls="controls" poster="video/duel.jpg"></video></center>
+            <center><video src="<?=$sourceurl?>" class="w-50" controls="controls" poster="video/duel.jpg"></video></center>
             
                 <img src="<?php echo $photo; ?>" style="object-fit: cover; width: 45px; height: 45px; border-radius: 150px; margin-top: -33px;" class="fill-current mp-5">
                 <h5 style="margin-bottom: -0px;" href="testings" class="col-10 ml-3  d-inline-block font-weight-bold"><a href="/<?php echo $username; ?>"><?php echo $fname?>&nbsp;<?php echo $lname; ?></a><br><p href="testings" style="font-size: 15px; font-weight: 500; margin-top: -45px;" class="col-10 d-inline-block font-weight-bold"><?php echo zmdate($posted_at); ?></p></h5>
@@ -91,19 +128,25 @@ $posted_at = DB::query('SELECT posted_at FROM posts WHERE id=:id', array(':id'=>
                     ?>
                     </div>
                     <div class="col">
-                        <a href="#" style="float: left;" class="nav__link"><i class="bx bx-dislike nav__icon"></i><span class="nav__namec ml-3"><?php echo $comments; ?></span></a>
+                    <?php
+                        if (DB::query('SELECT user_id FROM posts_likes WHERE user_id=:userid AND post_id=:postid', array(':userid' => isLoggedIn(), ':postid'=>$p['id']))[0]['user_id']) {
+                            echo '<a datad-id="'.$id.'" style="float: left;" class="nav__link"><i style="color: #0d6efd !important;" class="bx bx-dislike nav__icon"></i><span style="color: #0d6efd !important;" class="nav__namec ml-3">'.$dislikes.'</span></a>';
+                        } else {
+                            echo '<a datad-id="'.$id.'" style="float: left;" class="nav__link"><i class="bx bx-dislike nav__icon"></i><span class="nav__namec ml-3">'.$dislikes.'</span></a>';
+                        }
+                    ?>
                     </div> <?php
                     if ($user_id === isLoggedIn()) {
                     ?>
                     <div class="col">
-                    <div class="dropdown">
+                    <!--div class="dropdown">
                     <a id="dropdownMenuLink" href="#" data-bs-toggle="dropdown" style="float: left;" class="nav__link"><i class="bx bx-dots-horizontal-rounded nav__icon"></i><span class="nav__namec ml-3"></span></a>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a data-bs-toggle="modal" data-bs-target="#exampleModal" href="#" style="float: left;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-pin nav__icon"></i><span class="nav__namec ml-3">Закрепить</span></a></li>
                         <li><a href="#" style="float: left; color: #ff1548;" class="nav__link dropdown-item"><i style="margin-right: 4.5px;" class="bx bx-trash nav__icon"></i><span class="nav__namec ml-3">Удалить</span></a></li>
                     </ul>
-                </div>
+                </div-->
                         
                     </div>
                     <?php } ?>
